@@ -1,14 +1,16 @@
 #ifndef FDF_H
 # define FDF_H
 
-# include "minilibx/mlx.h"
+# include <mlx.h>
 
-# define WIN_W 800
-# define WIN_H 600
+# define WIN_W 1000
+# define WIN_H 1000
 # define KEY_ESC 65307
-# define OFFSET_X 200
-# define OFFSET_Y 100
+# define OFFSET_X 400
+# define OFFSET_Y 300
 # define SCALE 20
+# define HEIGHT_SCALE 7
+# define ANGLE 1.15
 
 typedef struct s_app
 {
@@ -35,6 +37,7 @@ typedef struct s_2dim
 }	t_2dim;
 
 void	draw_line(t_app *a, t_point start, t_point end, int color);
-void	draw_map(t_app *a, int map[5][5], int rows, int cols);
+void	draw_map(t_app *a, int **map, int rows, int cols);
+int		**read_map(char *filename, int *rows, int *cols);
 
 #endif

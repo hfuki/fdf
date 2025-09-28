@@ -1,6 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfuki <hfuki@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/28 17:18:22 by hfuki             #+#    #+#             */
+/*   Updated: 2025/09/28 17:18:22 by hfuki            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 #include <stdlib.h>
 #include <unistd.h>
+
+static void	free_all(int **arr, int rows)
+{
+	int	i;
+
+	i = 0;
+	while (i < rows)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+	return ;
+}
 
 static int	key_hook(int keycode, void *param)
 {
@@ -41,7 +67,9 @@ int	main(int argc, char **argv)
 		return (1);
 	a.img = mlx_new_image(a.mlx, WIN_W, WIN_H);
 	a.addr = mlx_get_data_addr(a.img, &a.bpp, &a.line_len, &a.endian);
-	draw_map(&a, map, 5, 5);
+	map = read_map(argv[1], &rows, &cols);
+	draw_map(&a, map, rows, cols);
+	free_all(map, rows);
 	mlx_put_image_to_window(a.mlx, a.win, a.img, 0, 0);
 	mlx_key_hook(a.win, key_hook, &a);
 	mlx_hook(a.win, 17, 0, close_hook, &a);
