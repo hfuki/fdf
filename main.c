@@ -34,7 +34,12 @@ static int	key_hook(int keycode, void *param)
 	if (keycode == KEY_ESC)
 	{
 		if (a->win != NULL)
+		{
 			mlx_destroy_window(a->mlx, a->win);
+			mlx_destroy_image(a->mlx, a->img);
+			mlx_destroy_display(a->mlx);
+		}
+		free(a->mlx);
 		exit(0);
 	}
 	return (0);
@@ -43,7 +48,12 @@ static int	key_hook(int keycode, void *param)
 static int	close_hook(t_app *a)
 {
 	if (a->win != NULL)
+	{
 		mlx_destroy_window(a->mlx, a->win);
+		mlx_destroy_image(a->mlx, a->img);
+		mlx_destroy_display(a->mlx);
+	}
+	free(a->mlx);
 	exit(0);
 	return (0);
 }
@@ -57,15 +67,17 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (1);
+	map = read_map(argv[1], &rows, &cols);
+	if (!map)
+		return (1);
 	a.mlx = mlx_init();
 	if (a.mlx == NULL)
 		return (1);
-	a.win = mlx_new_window(a.mlx, WIN_W, WIN_H, "fdf step1");
+	a.win = mlx_new_window(a.mlx, WIN_W, WIN_H, "fdf");
 	if (a.mlx == NULL)
 		return (1);
 	a.img = mlx_new_image(a.mlx, WIN_W, WIN_H);
 	a.addr = mlx_get_data_addr(a.img, &a.bpp, &a.line_len, &a.endian);
-	map = read_map(argv[1], &rows, &cols);
 	draw_map(&a, map, rows, cols);
 	free_all(map, rows);
 	mlx_put_image_to_window(a.mlx, a.win, a.img, 0, 0);
