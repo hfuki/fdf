@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
 
 static void	put_pixel(t_app *a, int x, int y, int color)
 {
@@ -25,86 +22,58 @@ static void	put_pixel(t_app *a, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-static void	trend_line(t_point start, t_point end, int *px, int *py)
+static void	trend_line(t_st_en points, int *px, int *py)
 {
-	if (start.x < end.x)
+	if (points.start.x < points.end.x)
 		*px = 1;
 	else
 		*px = -1;
-	if (start.y < end.y)
+	if (points.start.y < points.end.y)
 		*py = 1;
 	else
 		*py = -1;
 	return ;
 }
 
-static void	bresenham(int *err2, int *err, t_2dim *dif, t_2dim *step, t_point *start)
+static int	bresenham(int *err, t_2dim *dif, t_2dim *step, t_point *start)
 {
-		*err2 = *err * 2;
-		if (*err2 > -dif->y)
-		{
-			*err -= dif->y;
-			start->x += step->x;
-		}
-		if (*err2 < dif->x)
-		{
-			*err += dif->x;
-			start->y += step->y;
-		}
+	int	err2;
+
+	err2 = *err * 2;
+	if (err2 > -dif->y)
+	{
+		*err -= dif->y;
+		start->x += step->x;
+	}
+	if (err2 < dif->x)
+	{
+		*err += dif->x;
+		start->y += step->y;
+	}
+	return (err2);
 }
 
-void	draw_line_x(t_app *a, t_point start, t_point end, int s_color, int e_color)
+void	draw_line(t_app *a, t_st_en points, int s_color, int e_color)
 {
 	t_2dim	dif;
 	t_2dim	step;
-	int	err;
-	int	err2;
-	int	color;
-	int	dif_col;
+	int		err;
+	int		err2;
+	int		color;
 
-	dif.x = abs(start.x - end.x);
-	dif.y = abs(start.y - end.y);
-	trend_line(start, end, &step.x, &step.y);
+	dif.x = abs(points.start.x - points.end.x);
+	dif.y = abs(points.start.y - points.end.y);
+	trend_line(points, &step.x, &step.y);
 	err = dif.x - dif.y;
 	color = s_color;
-	dif_col = s_color - e_color;
-	while (start.x != end.x || start.y != end.y)
+	while (points.start.x != points.end.x || points.start.y != points.end.y)
 	{
-		put_pixel(a, start.x, start.y, color);
-		if ((start.z - end.z) > 0)
-			color -= dif_col / dif.y;
-		else if ((start.z - end.z) < 0)
-			color += dif_col / dif.x;
-		else ;
-		bresenham(&err2, &err, &dif, &step, &start);
+		put_pixel(a, points.start.x, points.start.y, color);
+		if ((points.start.z - points.end.z) > 0)
+			color -= (s_color - e_color) / dif.y;
+		else if ((points.start.z - points.end.z) < 0)
+			color += (s_color - e_color) / dif.x;
+		err2 = bresenham(&err, &dif, &step, &points.start);
 	}
-	put_pixel(a, start.x, start.y, color);
-}
-
-void	draw_line_y(t_app *a, t_point start, t_point end, int s_color, int e_color)
-{
-	t_2dim	dif;
-	t_2dim	step;
-	int	err;
-	int	err2;
-	int	color;
-	int	dif_col;
-
-	dif.x = abs(start.x - end.x);
-	dif.y = abs(start.y - end.y);
-	trend_line(start, end, &step.x, &step.y);
-	err = dif.x - dif.y;
-	color = s_color;
-	dif_col = s_color - e_color;
-	while (start.x != end.x || start.y != end.y)
-	{
-		put_pixel(a, start.x, start.y, color);
-		if ((start.z - end.z) > 0)
-			color -= dif_col / dif.y;
-		else if ((start.z - end.z) < 0)
-			color += dif_col / dif.x;
-		else ;
-		bresenham(&err2, &err, &dif, &step, &start);
-	}
-	put_pixel(a, start.x, start.y, color);
+	put_pixel(a, points.start.x, points.start.y, color);
 }

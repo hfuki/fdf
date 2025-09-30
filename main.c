@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 static void	free_all(int **arr, int rows)
 {
