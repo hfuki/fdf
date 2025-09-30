@@ -9,7 +9,7 @@
 # define OFFSET_X 400
 # define OFFSET_Y 300
 # define SCALE 20
-# define HEIGHT_SCALE 5
+# define HEIGHT_SCALE 2
 # define ANGLE 1.15
 # define COLOR 0xFF0000
 
@@ -37,7 +37,8 @@ typedef struct s_2dim
 	int	y;
 }	t_2dim;
 
-void	draw_line(t_app *a, t_point start, t_point end, int s_color, int e_color);
+void	draw_line_x(t_app *a, t_point start, t_point end, int s_color, int e_color);
+void	draw_line_y(t_app *a, t_point start, t_point end, int s_color, int e_color);
 void	draw_map(t_app *a, int **map, int rows, int cols);
 int		**read_map(char *filename, int *rows, int *cols);
 

@@ -11,20 +11,19 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <unistd.h>
 
 static void	drawline_map_x(t_app *a, t_point start, t_point end, t_2dim obj, int** map)
 {
 	end.z = map[obj.y][obj.x + 1];
 	end.x = (obj.x + 1 - obj.y) * SCALE + OFFSET_X;
 	end.y = (obj.x + 1 + obj.y) * SCALE / ANGLE - end.z * HEIGHT_SCALE + OFFSET_Y;
-	if ((start.z - end.z) > 0)
-		draw_line(a, start, end, COLOR, 0xFFFFFF);
-	else if (((start.z - end.z) == 0) && start.z == 0)
-		draw_line(a, start, end, 0xFFFFFF, 0xFFFFFF);
+	if (((start.z - end.z) == 0) && start.z == 0)
+		draw_line_x(a, start, end, 0xFFFFFF, 0xFFFFFF);
 	else if (((start.z - end.z) == 0) && start.z > 0)
-		draw_line(a, start, end, COLOR, COLOR);
+		draw_line_x(a, start, end, COLOR, COLOR);
 	else
-		draw_line(a, start, end, 0xFFFFFF, COLOR);
+		draw_line_x(a, start, end, COLOR, 0xFFFFFF);
 }
 
 static void	drawline_map_y(t_app *a, t_point start, t_point end, t_2dim obj, int **map)
@@ -32,14 +31,12 @@ static void	drawline_map_y(t_app *a, t_point start, t_point end, t_2dim obj, int
 	end.z = map[obj.y + 1][obj.x];
 	end.x = (obj.x - obj.y - 1) * SCALE + OFFSET_X;
 	end.y = (obj.x + obj.y + 1) * SCALE / ANGLE - end.z * HEIGHT_SCALE + OFFSET_Y;
-	if ((start.z - end.z) > 0)
-		draw_line(a, start, end, COLOR, 0xFFFFFF);
-	else if (((start.z - end.z) == 0) && start.z == 0)
-		draw_line(a, start, end, 0xFFFFFF, 0xFFFFFF);
+	if (((start.z - end.z) == 0) && start.z == 0)
+		draw_line_x(a, start, end, 0xFFFFFF, 0xFFFFFF);
 	else if (((start.z - end.z) == 0) && start.z > 0)
-		draw_line(a, start, end, COLOR, COLOR);
+		draw_line_x(a, start, end, COLOR, COLOR);
 	else
-		draw_line(a, start, end, 0xFFFFFF, COLOR);
+		draw_line_x(a, start, end, COLOR, 0xFFFFFF);
 }
 
 void	draw_map(t_app *a, int **map, int rows, int cols)
