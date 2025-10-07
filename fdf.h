@@ -26,9 +26,8 @@
 # define WIN_H 1000
 # define KEY_ESC 65307
 # define OFFSET_X 500
-# define OFFSET_Y 250
-# define SCALE 166.666
-# define HEIGHT_SCALE 0.5
+# define OFFSET_Y 400
+# define HEIGHT_SCALE 0.3
 # define COLOR 0xFF0000
 
 typedef struct s_app
@@ -56,6 +55,12 @@ typedef struct s_2dim
 	int	x;
 	int	y;
 }	t_2dim;
+
+typedef struct s_2dim_d
+{
+	double	x;
+	double	y;
+}	t_2dim_d;
 
 typedef struct s_st_en
 {

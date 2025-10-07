@@ -22,10 +22,18 @@ static void	init_points(t_point *point)
 
 static int	scale_decide(int rows, int cols)
 {
+	int scale;
+
 	if (rows >= cols)
-		return (OFFSET_X / rows);
+	{
+		scale = OFFSET_X / rows;
+		return (scale);
+	}
 	else
-		return (OFFSET_X / cols);
+	{
+		scale = OFFSET_Y / cols;
+		return (scale);
+	}
 }
 
 static void	drawline_map_x(t_app *a, t_st_en points, t_2dim obj, int **map)
@@ -64,7 +72,7 @@ void	draw_map(t_app *a, int **map)
 {
 	t_2dim	obj;
 	t_st_en	points;
-	int		scale;
+	double	scale;
 
 	obj.y = 0;
 	init_points(&points.end);
@@ -76,7 +84,7 @@ void	draw_map(t_app *a, int **map)
 		{
 			points.start.z = map[obj.y][obj.x] * scale * HEIGHT_SCALE;
 			points.start.x = (obj.x - obj.y) * scale * (sqrt(3) / 2) + OFFSET_X;
-			points.start.y = (obj.x + obj.y) * scale * 0.5 - points.end.z + OFFSET_Y;
+			points.start.y = (obj.x + obj.y) * scale * 0.5 - points.start.z + OFFSET_Y;
 			if (obj.x < a->cols - 1)
 				drawline_map_x(a, points, obj, map);
 			if (obj.y < a->rows - 1)
