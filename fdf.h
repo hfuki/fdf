@@ -20,15 +20,15 @@
 # include "get_next_line_bonus.h"
 # include "libft/libft.h"
 # include <fcntl.h>
+# include <math.h>
 
 # define WIN_W 1000
 # define WIN_H 1000
 # define KEY_ESC 65307
-# define OFFSET_X 400
-# define OFFSET_Y 300
-# define SCALE 20
-# define HEIGHT_SCALE 2
-# define ANGLE 1.15
+# define OFFSET_X 500
+# define OFFSET_Y 250
+# define SCALE 166.666
+# define HEIGHT_SCALE 0.5
 # define COLOR 0xFF0000
 
 typedef struct s_app
@@ -40,6 +40,8 @@ typedef struct s_app
 	int		bpp;
 	int		line_len;
 	int		endian;
+	int		cols;
+	int		rows;
 }	t_app;
 
 typedef struct s_point
@@ -62,7 +64,7 @@ typedef struct s_st_en
 }	t_st_en;
 
 void	draw_line(t_app *a, t_st_en points, int s_color, int e_color);
-void	draw_map(t_app *a, int **map, int rows, int cols);
+void	draw_map(t_app *a, int **map);
 int		**read_map(char *filename, int *rows, int *cols);
 
 #endif

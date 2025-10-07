@@ -35,7 +35,7 @@ static void	trend_line(t_st_en points, int *px, int *py)
 	return ;
 }
 
-static int	bresenham(int *err, t_2dim *dif, t_2dim *step, t_point *start)
+static void	bresenham(int *err, t_2dim *dif, t_2dim *step, t_point *start)
 {
 	int	err2;
 
@@ -50,7 +50,6 @@ static int	bresenham(int *err, t_2dim *dif, t_2dim *step, t_point *start)
 		*err += dif->x;
 		start->y += step->y;
 	}
-	return (err2);
 }
 
 void	draw_line(t_app *a, t_st_en points, int s_color, int e_color)
@@ -58,7 +57,6 @@ void	draw_line(t_app *a, t_st_en points, int s_color, int e_color)
 	t_2dim	dif;
 	t_2dim	step;
 	int		err;
-	int		err2;
 	int		color;
 
 	dif.x = abs(points.start.x - points.end.x);
@@ -73,7 +71,7 @@ void	draw_line(t_app *a, t_st_en points, int s_color, int e_color)
 			color -= (s_color - e_color) / dif.y;
 		else if ((points.start.z - points.end.z) < 0)
 			color += (s_color - e_color) / dif.x;
-		err2 = bresenham(&err, &dif, &step, &points.start);
+		bresenham(&err, &dif, &step, &points.start);
 	}
 	put_pixel(a, points.start.x, points.start.y, color);
 }

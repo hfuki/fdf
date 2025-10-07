@@ -62,12 +62,10 @@ int	main(int argc, char **argv)
 {
 	t_app	a;
 	int		**map;
-	int		rows;
-	int		cols;
 
 	if (argc != 2)
 		return (1);
-	map = read_map(argv[1], &rows, &cols);
+	map = read_map(argv[1], &a.rows, &a.cols);
 	if (!map)
 		return (1);
 	a.mlx = mlx_init();
@@ -78,8 +76,8 @@ int	main(int argc, char **argv)
 		return (1);
 	a.img = mlx_new_image(a.mlx, WIN_W, WIN_H);
 	a.addr = mlx_get_data_addr(a.img, &a.bpp, &a.line_len, &a.endian);
-	draw_map(&a, map, rows, cols);
-	free_all(map, rows);
+	draw_map(&a, map);
+	free_all(map, a.rows);
 	mlx_put_image_to_window(a.mlx, a.win, a.img, 0, 0);
 	mlx_key_hook(a.win, key_hook, &a);
 	mlx_hook(a.win, 17, 0, close_hook, &a);
